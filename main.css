@@ -1,0 +1,9 @@
+html {
+    font-family: "Roboto", sans-serif;
+}
+
+.description {
+    font-style: italic;
+    font-weight: lighter;
+    color: darkgray;
+}
