@@ -2,6 +2,27 @@ html {
     font-family: "Roboto", sans-serif;
 }
 
+.btn {
+    color: black;
+    background-color: white;
+    stroke: black;
+    padding: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 5px;
+    border-color: black;
+    font-family: "Roboto", sans-serif;
+}
+
+.btn:hover {
+    background-color: lightgrey;
+}
+
+.btn:active {
+    transform: translateY(1px);
+    background-color: gray;
+}
+
 .description {
     font-style: italic;
     font-weight: lighter;
