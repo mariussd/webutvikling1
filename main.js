@@ -14,6 +14,8 @@ function drawArt() {
     ctx.fillRect(0, 0, 150, 75);
 }
 
+class clickableSquare {}
+
 function addElement(color, width, height, top, left) {
     canvasElements.push({
         color: color,
