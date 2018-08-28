@@ -14,16 +14,15 @@ function drawArt() {
     ctx.fillRect(0, 0, 150, 75);
 }
 
-class clickableSquare {}
+function Square(x, y, width, height) {
+    this.height = height;
+    this.width = width;
+    this.x = x;
+    this.y = y;
+}
 
-function addElement(color, width, height, top, left) {
-    canvasElements.push({
-        color: color,
-        width: width,
-        height: height,
-        top: top,
-        left: left
-    });
+function addElement(element) {
+    canvasElements.push(element);
 }
 
 function showDocumentation() {
