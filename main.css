@@ -10,8 +10,10 @@ html {
     padding-left: 8px;
     padding-right: 8px;
     border-radius: 5px;
-    border-color: black;
+    border: 1px solid black;
     font-family: "Roboto", sans-serif;
+    margin: 10px;
+    margin-left: 0px;
 }
 
 .btn:hover {
@@ -21,6 +23,11 @@ html {
 .btn:active {
     transform: translateY(1px);
     background-color: gray;
+}
+
+.art {
+    border-radius: 8px;
+    border: 1px solid black;
 }
 
 .description {
