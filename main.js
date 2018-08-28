@@ -1,24 +1,51 @@
 let documentationButton = document.getElementById("showDoc");
 let mainHeader = document.getElementById("mainHeader");
 let canvas = document.getElementById("mainCanvas");
+let canvasCoordinates = canvas.getBoundingClientRect();
 let ctx = canvas.getContext("2d");
+
+const colors = ["blue", "green", "red"];
 
 let canvasElements = [];
 
 documentationButton.addEventListener("click", showDocumentation);
-mainHeader.addEventListener("mouseover", changeColor);
-mainHeader.addEventListener("mouseleave", changeColorBack);
+mainHeader.addEventListener("mouseover", function() {mainHeader.style.color = "blue";});
+mainHeader.addEventListener("mouseleave", function() {mainHeader.style.color = "black";});
+canvas.addEventListener("click", function(event) {
+    checkClickHit(event);
+})
 
 function drawArt() {
-    ctx.fillStyle = "red";
-    ctx.fillRect(0, 0, 150, 75);
+    canvasElements.forEach(function(element) {
+        ctx.fillStyle = element.color;
+        ctx.fillRect(element.x, element.y, element.width, element.height);
+        element.isClicked();
+    })
 }
 
-function Square(x, y, width, height) {
+function checkClickHit(event) {
+    canvasElements.forEach(function(element) {
+        if (element.isClicked()) {
+            element.changeColor();
+        }
+    })
+}
+
+function Square(x, y, width, height, color) {
+    this.color = color;
     this.height = height;
     this.width = width;
     this.x = x;
     this.y = y;
+
+    this.changeColor = function() {
+        this.color = colors[parseInt(Math.random() * colors.length)];
+        drawArt();
+    }
+
+    this.isClicked = function() {
+        
+    }
 }
 
 function addElement(element) {
@@ -29,14 +56,27 @@ function showDocumentation() {
     console.log("Jadda");
 }
 
-function changeColor() {
-    mainHeader.style.color = "blue";
-}
-
-function changeColorBack() {
-    mainHeader.style.color = "black";
-}
-
 function main() {
+    let squareCount = 10;
+
+    let spaceBetween = 10;
+    let startingX = 10;
+    let startingY = 10;
+    let standardWidth = 20;
+
+    for (i = 0; i < squareCount; i++) {
+        addElement(new Square(startingX + (standardWidth * i) + (spaceBetween * i), startingY, standardWidth, standardWidth, colors[parseInt(Math.random() * colors.length)]))
+    }
+    
+    // s1 = new Square(10, 10, 20, 20, "red");
+    // s3 = new Square(40, 10, 20, 20, "green");
+    // s2 = new Square(70, 10, 20, 20, "blue");
+    // addElement(s1);
+    // addElement(s2);
+    // addElement(s3);
+
+    console.log(canvasElements);
     drawArt();
 }
+
+main();
