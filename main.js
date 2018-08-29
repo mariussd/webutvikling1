@@ -3,6 +3,7 @@ let randomiseButton = document.getElementById("randomise");
 let fightButton = document.getElementById("fight");
 let mainHeader = document.getElementById("mainHeader");
 let canvas = document.getElementById("mainCanvas");
+let winnerP = document.getElementById("winner");
 
 let canvasCoordinates = canvas.getBoundingClientRect();
 let ctx = canvas.getContext("2d");
@@ -13,7 +14,10 @@ let canvasElements = [];
 let fights = 0;
 
 documentationButton.addEventListener("click", showDocumentation);
-randomiseButton.addEventListener("click", draw);
+randomiseButton.addEventListener("click", function() {
+    winnerP.innerHTML = "Fight to determine the best color.";
+    draw();
+} );
 fightButton.addEventListener("click", fight);
 mainHeader.addEventListener("mouseover", function() {
     mainHeader.style.color = "blue";
@@ -85,9 +89,12 @@ function Square(x, y, width, height, color) {
 }
 
 function fight() {
+    let finished = false;
     let colors = [0, 0, 0];
+    let totalSquares = 0;
 
     canvasElements.forEach(function(element) {
+        totalSquares++;
         if (element.color === "red") {
             colors[0]++;
         } else if (element.color === "green") {
@@ -123,8 +130,23 @@ function fight() {
         }
     });
 
+    colors.forEach(function(element) {
+        if (element === totalSquares) {
+            finished = true;
+        }
+    })
+
     drawArt();
+
+    if (finished) {
+        winnerP.innerHTML = "The winner is " + winningColor + "!"
+        return;
+    } else {
+        winnerP.innerHTML = "Fight to determine the best color.";
+        setTimeout(() => fight(), 200);
+    }
 }
+
 
 function addElement(element) {
     canvasElements.push(element);
