@@ -1,7 +1,8 @@
 let documentationButton = document.getElementById("showDoc");
+let randomiseButton = document.getElementById("randomise");
+let fightButton = document.getElementById("fight");
 let mainHeader = document.getElementById("mainHeader");
 let canvas = document.getElementById("mainCanvas");
-let randomiseButton = document.getElementById("randomise");
 
 let canvasCoordinates = canvas.getBoundingClientRect();
 let ctx = canvas.getContext("2d");
@@ -9,9 +10,11 @@ let ctx = canvas.getContext("2d");
 const colors = ["blue", "green", "red"];
 
 let canvasElements = [];
+let fights = 0;
 
 documentationButton.addEventListener("click", showDocumentation);
 randomiseButton.addEventListener("click", draw);
+fightButton.addEventListener("click", fight);
 mainHeader.addEventListener("mouseover", function() {
     mainHeader.style.color = "blue";
 });
@@ -81,6 +84,48 @@ function Square(x, y, width, height, color) {
     };
 }
 
+function fight() {
+    let colors = [0, 0, 0];
+
+    canvasElements.forEach(function(element) {
+        if (element.color === "red") {
+            colors[0]++;
+        } else if (element.color === "green") {
+            colors[1]++;
+        } else {
+            colors[2]++;
+        }
+    });
+
+    let winningColor = "";
+
+    // this is hard coded in, but I have no intention of adding
+    // more colors.
+    if (colors[0] > colors[1] && colors[0] > colors[2]) {
+        winningColor = "red";
+    } else if (colors[1] > colors[0] && colors[1] > colors[2]) {
+        winningColor = "green";
+    } else if (colors[2] > colors[0] && colors[2] > colors[1]) {
+        winningColor = "blue";
+    }
+
+    canvasElements.forEach(function(element) {
+        let roll = Math.random();
+
+        if (element.color !== winningColor) {
+            if (roll >= 0.6666) {
+                element.color = "blue";
+            } else if (roll < 0.6666 && roll >= 0.3333) {
+                element.color = "red";
+            } else {
+                element.color = "green";
+            }
+        }
+    });
+
+    drawArt();
+}
+
 function addElement(element) {
     canvasElements.push(element);
 }
@@ -105,9 +150,6 @@ function draw() {
     let squareCountY = Math.round(
         (canvasCoordinates.y + canvas.height) / standardWidth
     );
-
-    console.log(squareCountX);
-    console.log(squareCountY);
 
     for (i = 0; i < squareCountY; i++) {
         for (j = 0; j < squareCountX; j++) {
