@@ -9,27 +9,30 @@ const colors = ["blue", "green", "red"];
 let canvasElements = [];
 
 documentationButton.addEventListener("click", showDocumentation);
-mainHeader.addEventListener("mouseover", function() {mainHeader.style.color = "blue";});
-mainHeader.addEventListener("mouseleave", function() {mainHeader.style.color = "black";});
+mainHeader.addEventListener("mouseover", function() {
+    mainHeader.style.color = "blue";
+});
+mainHeader.addEventListener("mouseleave", function() {
+    mainHeader.style.color = "black";
+});
 canvas.addEventListener("click", function(event) {
-    checkClickHit(event);
-})
+    console.log("hey");
+    canvasElements.forEach(function(element) {
+        if (element.isClicked(event.clientX, event.clientY)) {
+            console.log("JA????");
+            element.changeColor();
+        }
+    });
+});
 
 function drawArt() {
     canvasElements.forEach(function(element) {
         ctx.fillStyle = element.color;
         ctx.fillRect(element.x, element.y, element.width, element.height);
-        console.log(element.isClicked());
-    })
+    });
 }
 
-function checkClickHit(event) {
-    canvasElements.forEach(function(element) {
-        if (element.isClicked(event.clientX, event.clientY)) {
-            element.changeColor();
-        }
-    })
-}
+function checkClickHit(event) {}
 
 function Square(x, y, width, height, color) {
     this.color = color;
@@ -39,19 +42,29 @@ function Square(x, y, width, height, color) {
     this.y = y;
 
     this.changeColor = function() {
-        this.color = colors[parseInt(Math.random() * colors.length)];
+        const previousColor = this.color;
+
+        while (previousColor === this.color) {
+            this.color = colors[parseInt(Math.random() * colors.length)];
+        }
+
         drawArt();
-    }
+    };
 
     this.isClicked = function(x, y) {
-        globalX = canvasCoordinates.x + this.x;
-        globalY = canvasCoordinates.y + this.y;
+        globalX = Math.round(canvasCoordinates.x) + this.x;
+        globalY = Math.round(canvasCoordinates.y) + this.y;
 
-        if ((x >= this.globalX + this.width && x <= this.globalX) && (y <= this.globalY + this.width && y >= this.globalY)) {
+        if (
+            x >= globalX &&
+            x <= globalX + this.width &&
+            y >= globalY &&
+            y <= globalY + this.width
+        ) {
             return true;
         }
         return false;
-    }
+    };
 }
 
 function addElement(element) {
@@ -71,9 +84,17 @@ function main() {
     let standardWidth = 20;
 
     for (i = 0; i < squareCount; i++) {
-        addElement(new Square(startingX + (standardWidth * i) + (spaceBetween * i), startingY, standardWidth, standardWidth, colors[parseInt(Math.random() * colors.length)]))
+        addElement(
+            new Square(
+                startingX + standardWidth * i + spaceBetween * i,
+                startingY,
+                standardWidth,
+                standardWidth,
+                colors[parseInt(Math.random() * colors.length)]
+            )
+        );
     }
-    
+
     // s1 = new Square(10, 10, 20, 20, "red");
     // s3 = new Square(40, 10, 20, 20, "green");
     // s2 = new Square(70, 10, 20, 20, "blue");
