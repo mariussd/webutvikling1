@@ -19,13 +19,13 @@ function drawArt() {
     canvasElements.forEach(function(element) {
         ctx.fillStyle = element.color;
         ctx.fillRect(element.x, element.y, element.width, element.height);
-        element.isClicked();
+        console.log(element.isClicked());
     })
 }
 
 function checkClickHit(event) {
     canvasElements.forEach(function(element) {
-        if (element.isClicked()) {
+        if (element.isClicked(event.clientX, event.clientY)) {
             element.changeColor();
         }
     })
@@ -43,8 +43,14 @@ function Square(x, y, width, height, color) {
         drawArt();
     }
 
-    this.isClicked = function() {
-        
+    this.isClicked = function(x, y) {
+        globalX = canvasCoordinates.x + this.x;
+        globalY = canvasCoordinates.y + this.y;
+
+        if ((x >= this.globalX + this.width && x <= this.globalX) && (y <= this.globalY + this.width && y >= this.globalY)) {
+            return true;
+        }
+        return false;
     }
 }
 
