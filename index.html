@@ -12,22 +12,29 @@
 
 <body>
     <div>
-        <h1 id="mainHeader">Fargenes krig</h1>
+        <h1 id="mainHeader">The war of colors</h1>
         <p class="description">
-            Av Per Snilberg. Per ønsker å vise frem hvor tilfeldig utfallet av en krig kan være. Hvem som vinner kommer ofte an på rent
+            Oversatt til norsk: Av Per Snilberg. Per ønsker å vise frem hvor tilfeldig utfallet av en krig kan være. Hvem som vinner kommer ofte an på rent
             tilfeldige ting, som for eksempel Math.random() i Javascript.
         </p>
     </div>
     <div>
-        <canvas id="mainCanvas" width="500" height="500" class="art"></canvas>
+        <canvas id="mainCanvas" width="1000" height="500" class="art"></canvas>
         <p id="winner">Fight to determine the best color.</p>
-        <p>Click the squares to help your favorite. Press <i>space</i> to randomise.</p>
+        <p>Pick a color below and click the squares to help your favorite. Press <i>space</i> to randomise. Hold <i>space</i> for disco.</p>
         <br>
-        <button id="fight" class="btn">FIGHT</button>
+        <form>
+            <input type="radio" id="redb" name="colorpicker" value="red">Red<br>
+            <input type="radio" id="greenb" name="colorpicker" value="green">Green<br>
+            <input type="radio" id="blueb" name="colorpicker" value="blue">Blue<br>
+            <input type="radio" id="removeb" name="colorpicker" value="remove">Remove<br>   
+        </form>
+        <br>
+        <button id="fight" class="btn-alert">FIGHT</button>
         <button id="randomise" class="btn">Randomise</button>
     </div>
     <div>
-        <button id="showDoc" class="btn">Vis dokumentasjon</button>
+        <button id="showDoc" class="btn">Show documentation</button>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="main.js"></script>

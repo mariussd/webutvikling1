@@ -1,12 +1,22 @@
 let documentationButton = document.getElementById("showDoc");
 let randomiseButton = document.getElementById("randomise");
 let fightButton = document.getElementById("fight");
+let redButton = document.getElementById("redb");
+let greenButton = document.getElementById("greenb");
+let blueButton = document.getElementById("blueb");
+let removeButton = document.getElementById("removeB");
 let mainHeader = document.getElementById("mainHeader");
 let canvas = document.getElementById("mainCanvas");
 let winnerP = document.getElementById("winner");
 
 let canvasCoordinates = canvas.getBoundingClientRect();
 let ctx = canvas.getContext("2d");
+
+let changingColor = "";
+
+$('input[type=radio][name=colorpicker]').change(function() {
+    changingColor = this.value;
+});
 
 const colors = ["blue", "green", "red"];
 
@@ -23,6 +33,8 @@ mainHeader.addEventListener("mouseover", function() {
     mainHeader.style.color = "blue";
 });
 
+
+
 // event listener for changing the color of the header
 mainHeader.addEventListener("mouseleave", function() {
     mainHeader.style.color = "black";
@@ -33,12 +45,17 @@ canvas.addEventListener("click", function(event) {
     // handler for checking if the click hit one of the boxes
     canvasElements.forEach(function(element) {
         if (element.isClicked(event.clientX, event.clientY)) {
-            element.changeColor();
+            if (changingColor === "remove") {
+                canvasElements.splice(canvasElements.indexOf(element), 1);
+                drawArt();
+            } else {
+                element.changeColor();
+            }
         }
     });
 });
 
-// event listener med jQuery
+// event listener with jQuery
 $(window).keypress(function(e) {
     if (e.which === 32) {
         draw();
@@ -46,6 +63,9 @@ $(window).keypress(function(e) {
 });
 
 function drawArt() {
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvasCoordinates.width, canvasCoordinates.height);
+
     canvasElements.forEach(function(element) {
         ctx.fillStyle = element.color;
         ctx.fillRect(element.x, element.y, element.width, element.height);
@@ -62,11 +82,7 @@ function Square(x, y, width, height, color) {
     this.y = y;
 
     this.changeColor = function() {
-        const previousColor = this.color;
-
-        while (previousColor === this.color) {
-            this.color = colors[parseInt(Math.random() * colors.length)];
-        }
+        this.color = changingColor != "" ? changingColor: this.color;
 
         // draws the whole array again
         drawArt();
