@@ -38,11 +38,21 @@ html {
     margin-left: 0px;
 }
 
+.interaction {
+    width: 50%;
+}
+
+.explanation {
+    text-align: center;
+    width: 50%;
+}
+
 .flex-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-flow: column wrap;
+    flex-direction: column;
+    flex-wrap: wrap;
 }
 
 .btn:hover {

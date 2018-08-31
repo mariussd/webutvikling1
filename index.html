@@ -16,29 +16,83 @@
             <h1 id="mainHeader" class="mainHeader">The war of colors</h1>
             <p class="description">
                 Oversatt til norsk: Av Per Snilberg. Per ønsker å vise frem hvor tilfeldig utfallet av en krig kan være. Hvem som vinner
-                kommer ofte an på rent tilfeldige ting, som for eksempel Math.random() i Javascript.
+                kommer ofte an på rent tilfeldige ting, som for eksempel Math.random() i Javascript. Han vokste opp på gård
+                der det ikke var så mye krig, men han pleide å leke krig med barna på skolen. Dette fikk han til å tenke
+                "men hvorfor taper jeg noen ganger, og vinner andre ganger?" Svaret ble aldri funnet av Per, så han konkluderte
+                med at tilfeldighetene måtte rå.
             </p>
         </div>
         <div>
             <canvas id="mainCanvas" width="500" height="500" class="art"></canvas>
         </div>
-        <div>
-            <p id="winner">Fight to determine the best color.</p>
-            <p>Pick a color below and click the squares to help your favorite. Press <i>space</i> to randomise. Hold <i>space</i>
-                for disco.</p>
-            <br>
-            <form>
-                <input type="radio" id="redb" name="colorpicker" value="red">Red<br>
-                <input type="radio" id="greenb" name="colorpicker" value="green">Green<br>
-                <input type="radio" id="blueb" name="colorpicker" value="blue">Blue<br>
-                <input type="radio" id="removeb" name="colorpicker" value="remove">Remove<br>
-                <input type="radio" id="circle" name="colorpicker" value="circle">Add circle<br>
-            </form>
-            <br>
-            <button id="fight" class="btn-alert">FIGHT</button>
-            <button id="randomise" class="btn">Randomise</button>
+        <div class="interaction flex-container">
+            <p id="winner" class="explanation">Fight to determine the best color.</p>
+            <span>
+                <form>
+                    <input type="radio" id="redb" name="colorpicker" value="red">Red<br>
+                    <input type="radio" id="greenb" name="colorpicker" value="green">Green<br>
+                    <input type="radio" id="blueb" name="colorpicker" value="blue">Blue<br>
+                    <input type="radio" id="removeb" name="colorpicker" value="remove">Remove<br>
+                    <input type="radio" id="circle" name="colorpicker" value="circle">Add circle<br>
+                </form>
+                <br>
+                <button id="fight" class="btn-alert">FIGHT</button>
+                <button id="randomise" class="btn">Randomise</button>
+            </span><br>
+            <h3>Instructions</h3>
+            <p class="explanation">Pick a color above and click the squares to help your favorite. Press <i>space</i> to
+                randomise. Hold <i>space</i>
+                for disco. The circle in the center is clickable. Clicking will change its color and move it down to the left. Every square
+                is clickable once you have selected a color to paint it with. You can also place non-interactive circles
+                on your cursor location by selecting "Add circle". These will disappear once you randomise.
+            </p>
             <br>
             <button id="showDoc" class="btn">Show documentation</button>
+            <p style="display: none" id="documentation-text">Layout-problematikken Flexbox og CSS-grid løser går mye ut på
+                hvordan elementer plasserer seg i forhold til hverandre på en nettside, og utviklerens mulighet til å kontrollere
+                dette. I CSS-grid bestemmes et elemens posisjon ut i fra et rutenett utvikleren kan bestemme selv. Flexbox
+                har muligheter for at elementene selv finner ut hvor de skal være innad i en flex-container, ved at utvikleren
+                definerer hvordan de skal plassere seg i forhold til andre elementer. Forskjellen mellom de to er at Flexbox
+                er éndimensjonal, Grid er todimentsjonal. Dette betyr derimot ikke at elementer i Flexbox ikke kan legge
+                seg i to dimensjoner, men det betyr at hver flex-container har en definert måte å plassere elementer på,
+                som i utgangspunktet er éndimensjonal. Disse to løsningene kan også utfylle hverandre, ved at du putter en
+                flex-container i et gitt sted i et grid. Slike løsninger kan være nyttig i mange situasjoner.
+                <br><br> I dette prosjektet har jeg kun brukt flexbox, ettersom jeg ikke så hensikten med å bruke grid. Dette
+                var en relativt liten oppgave, og alt jeg ville var å sentrere innholdet på nettsiden. <br>
+                <br> Angående HTML Canvas og SVG er disse to begge laget til å generere grafikk, men de fungerer ganske forskjellig.
+                Canvas gir deg et blankt område på siden der du kan tegne inn elementer og fylle dem med farge og så videre.
+                Problematikken kommer inn i bildet når Canvas sine tegninger rett og slett bare er tegninger og ikke trenger
+                å være håndfast definert i HTML-DOMen. Man kan tegne en firkant eller en sirkel, men om man ønsker å trykke
+                på den må man manuelt regne ut om man har truffet sirkelen eller ikke, etter man har lyttet til en hendelse
+                på selve canvaset. Man er nødt til å representere de forskjellige elementene i Javascript, og holde styr
+                på alle elementene som er i Canvaset til enhver tid dersom det skal være interaktivt, siden man må finne
+                ut hvilket element man har truffet. Man må altså loope gjennom alle elementene og sjekke om man er innenfor
+                elementets X- og Y-verdier.Dette er mye mer tungvint enn i SVG (sett fra dette prosjektet sitt perspektiv).<br><br>                I
+                SVG er nemlig hvert element skrevet i markup i HTML, og man kan enkelt endre på farge, størrelse, plassering
+                og så videre i CSS. Dersom du ønsker å endre posisjonen på et element er det bare å sette en ny posisjon,
+                det er ikke verre enn det. Et element er faktisk et element i DOMen, noe som gjør det mye enklere å gjøre
+                endringer på grunn av at man kan definere en lytter direkte på elementet. <br><br> Til dette prosjektet brukte
+                jeg Canvas, mest på grunn av at jeg var kjent med dette fra før. Dersom jeg skulle valgt igjen hadde jeg
+                nok valgt SVG. Canvas er veldig bra for å tegne, ettersom det er veldig presist og veldig fleksibelt. SVG
+                er nok best dersom man skal ha håndfaste elementer å interagere med.<br><br> jQuery er et bibliotek for Javascript
+                som i hovedsak går ut på å gjøre enkelte aspekter ved Javascript mye enklere. Javascript ble laget for å
+                gjøre nettsider mer programmerbare og interaktive, men dette er ikke alltid like enkelt dersom man kontinuerlig
+                må traversere et stort HTML-tre fullt av elementer. jQuery gjør dette veldig mye enklere ved at den enkelt
+                traverserer for å finne en selektor du har definert, og gir deg muligheten til å gjøre operasjoner på det
+                den finner. Man kan gjøre det samme med både Javascript og jQuery, men enkelte operasjoner er vanvittig mye
+                enklere dersom man bruker jQuery.<br><br> I mitt prosjekt brukte jeg jQuery på lyttere. Sesifikt bukte jeg
+                det for å lytte til endringer i valg av radio buttons, og for å lytte til om mellomrom-tasten ble trykket.
+                Dette fungerte veldig bra. Man kan definere nøyaktig hva den skal lytte til, noe som er veldig praktisk.<br><br>                Cross-browser
+                testing er veldig viktig siden forskjellige nettlesere potensielt støtter / ikke støtter forskjellige teknologier.
+                Dette er definitivt noe man er nødt til å tenke på når man driver med webdesign, ettersom man ikke nødvendigvis
+                bare kan velge og vrake av nye teknologier dersom man lager en stor side som brukes av veldig mange. Om man
+                har en feil kan dette svekke brukeropplevelsen betraktelig. Jeg har testet mitt prosjekt i Chrome på Mac,
+                Windows og Ubuntu, samt Safari og Firefox, der jeg sjekket om alt av nøkkelfunksjoner fungerte som det skulle.
+                <br><br> For informasjon har jeg ofte gått til w3schools eller StackOverflow, der finnes det veldig mange
+                gode tutorials for det som skulle brukes i dette prosjektet her. På w3schools har jeg brukt tutorials for
+                Canvas, CSS Grid, CSS Flexbox og generell CSS og HTML.<br><br> Har kun ett tilfelle av kopiert kode, dette
+                er kommenter inn i koden.
+            </p>
         </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

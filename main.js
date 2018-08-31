@@ -1,4 +1,5 @@
 let documentationButton = document.getElementById("showDoc");
+let documentationText = document.getElementById("documentation-text");
 let randomiseButton = document.getElementById("randomise");
 let fightButton = document.getElementById("fight");
 let redButton = document.getElementById("redb");
@@ -38,29 +39,29 @@ mainHeader.addEventListener("mouseover", function() {
     mainHeader.style.color = "blue";
 });
 mainHeader.addEventListener("mouseleave", function() {
-    mainHeader.style.color = "black";
+    mainHeader.style.color = "white";
 });
 
 // event listener for the canvas
 canvas.addEventListener("click", function(event) {
     // handler for checking if the click hit one of the boxes
     canvasElements.forEach(function(element) {
-        if (element.isClicked(event.clientX, event.clientY)) {
+        if (element.isClicked(event.pageX, event.pageY)) {
             if (changingColor === "remove") {
                 canvasElements.splice(canvasElements.indexOf(element), 1);
                 drawArt();
             } else if (changingColor === "circle") {
                 ctx.beginPath();
                 ctx.arc(
-                    event.clientX - canvasCoordinates.x,
-                    event.clientY - canvasCoordinates.y,
+                    event.pageX - canvasCoordinates.x,
+                    event.pageY - canvasCoordinates.y,
                     50,
                     0,
                     2 * Math.PI
                 );
                 ctx.fillStyle = "pink";
                 ctx.fill();
-            } else if (checkCircleHit(event.clientX, event.clientY)) {
+            } else if (checkCircleHit(event.pageX, event.pageY)) {
                 // taken from https://www.paulirish.com/2009/random-hex-color-code-snippets/
                 circleColor =
                     "#" + Math.floor(Math.random() * 16777215).toString(16);
@@ -122,7 +123,7 @@ function Square(x, y, width, height, color) {
     this.changeColor = function() {
         this.color = changingColor != "" ? changingColor : this.color;
 
-        // draws the whole array again
+        // draws the array again
         drawArt();
     };
 
@@ -215,7 +216,13 @@ function addElement(element) {
 }
 
 function showDocumentation() {
-    console.log("Jadda");
+    if (documentationText.style.display === "none") {
+        documentationText.style.display = "block";
+        documentationButton.innerHTML = "Hide documentation";
+    } else {
+        documentationText.style.display = "none";
+        documentationButton.innerHTML = "Show documentation";
+    }
 }
 
 function draw() {
