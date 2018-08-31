@@ -12,30 +12,31 @@ let winnerP = document.getElementById("winner");
 let canvasCoordinates = canvas.getBoundingClientRect();
 let ctx = canvas.getContext("2d");
 
+let circleX = canvasCoordinates.width * 0.5;
+let circleY = canvasCoordinates.height * 0.5;
+let circleRadius = 0;
+let circleColor = "cyan";
+
 let changingColor = "";
 
-$('input[type=radio][name=colorpicker]').change(function() {
-    changingColor = this.value;
-});
-
+// these can be changed
 const colors = ["blue", "green", "red"];
 
+// all the squares are stored here
 let canvasElements = [];
-let fights = 0;
 
+// event listeners
 documentationButton.addEventListener("click", showDocumentation);
 randomiseButton.addEventListener("click", function() {
     winnerP.innerHTML = "Fight to determine the best color.";
     draw();
-} );
+});
 fightButton.addEventListener("click", fight);
+
+// event listeners for changing the color of the header
 mainHeader.addEventListener("mouseover", function() {
     mainHeader.style.color = "blue";
 });
-
-
-
-// event listener for changing the color of the header
 mainHeader.addEventListener("mouseleave", function() {
     mainHeader.style.color = "black";
 });
@@ -48,6 +49,24 @@ canvas.addEventListener("click", function(event) {
             if (changingColor === "remove") {
                 canvasElements.splice(canvasElements.indexOf(element), 1);
                 drawArt();
+            } else if (changingColor === "circle") {
+                ctx.beginPath();
+                ctx.arc(
+                    event.clientX - canvasCoordinates.x,
+                    event.clientY - canvasCoordinates.y,
+                    50,
+                    0,
+                    2 * Math.PI
+                );
+                ctx.fillStyle = "pink";
+                ctx.fill();
+            } else if (checkCircleHit(event.clientX, event.clientY)) {
+                // taken from https://www.paulirish.com/2009/random-hex-color-code-snippets/
+                circleColor =
+                    "#" + Math.floor(Math.random() * 16777215).toString(16);
+                circleX -= Math.random() * 10;
+                circleY += Math.random() * 10;
+                drawArt();
             } else {
                 element.changeColor();
             }
@@ -55,13 +74,19 @@ canvas.addEventListener("click", function(event) {
     });
 });
 
-// event listener with jQuery
+// event listener for space bar (jQuery)
 $(window).keypress(function(e) {
     if (e.which === 32) {
         draw();
     }
 });
 
+// event listener for radio buttons (jQuery)
+$("input[type=radio][name=colorpicker]").change(function() {
+    changingColor = this.value;
+});
+
+// draws the squares in the canvasElements array
 function drawArt() {
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvasCoordinates.width, canvasCoordinates.height);
@@ -70,9 +95,22 @@ function drawArt() {
         ctx.fillStyle = element.color;
         ctx.fillRect(element.x, element.y, element.width, element.height);
     });
+
+    ctx.beginPath();
+    ctx.arc(circleX, circleY, circleRadius, 0, 2 * Math.PI);
+    ctx.fillStyle = circleColor;
+    ctx.fill();
 }
 
-function checkClickHit(event) {}
+function checkCircleHit(x, y) {
+    let a = x - (circleX + canvasCoordinates.x);
+    let b = y - (circleY + canvasCoordinates.y);
+    let c = Math.sqrt(a * a + b * b);
+    if (c <= circleRadius) {
+        return true;
+    }
+    return false;
+}
 
 function Square(x, y, width, height, color) {
     this.color = color;
@@ -82,7 +120,7 @@ function Square(x, y, width, height, color) {
     this.y = y;
 
     this.changeColor = function() {
-        this.color = changingColor != "" ? changingColor: this.color;
+        this.color = changingColor != "" ? changingColor : this.color;
 
         // draws the whole array again
         drawArt();
@@ -106,17 +144,17 @@ function Square(x, y, width, height, color) {
 
 function fight() {
     let finished = false;
-    let colors = [0, 0, 0];
+    let colors_count = [0, 0, 0];
     let totalSquares = 0;
 
     canvasElements.forEach(function(element) {
         totalSquares++;
-        if (element.color === "red") {
-            colors[0]++;
-        } else if (element.color === "green") {
-            colors[1]++;
+        if (element.color === colors[2]) {
+            colors_count[2]++;
+        } else if (element.color === colors[1]) {
+            colors_count[1]++;
         } else {
-            colors[2]++;
+            colors_count[0]++;
         }
     });
 
@@ -124,12 +162,21 @@ function fight() {
 
     // this is hard coded in, but I have no intention of adding
     // more colors.
-    if (colors[0] > colors[1] && colors[0] > colors[2]) {
-        winningColor = "red";
-    } else if (colors[1] > colors[0] && colors[1] > colors[2]) {
-        winningColor = "green";
-    } else if (colors[2] > colors[0] && colors[2] > colors[1]) {
-        winningColor = "blue";
+    if (
+        colors_count[0] > colors_count[1] &&
+        colors_count[0] > colors_count[2]
+    ) {
+        winningColor = colors[0];
+    } else if (
+        colors_count[1] > colors_count[0] &&
+        colors_count[1] > colors_count[2]
+    ) {
+        winningColor = colors[1];
+    } else if (
+        colors_count[2] > colors_count[0] &&
+        colors_count[2] > colors_count[1]
+    ) {
+        winningColor = colors[2];
     }
 
     canvasElements.forEach(function(element) {
@@ -137,32 +184,31 @@ function fight() {
 
         if (element.color !== winningColor) {
             if (roll >= 0.6666) {
-                element.color = "blue";
+                element.color = colors[0];
             } else if (roll < 0.6666 && roll >= 0.3333) {
-                element.color = "red";
+                element.color = colors[2];
             } else {
-                element.color = "green";
+                element.color = colors[1];
             }
         }
     });
 
-    colors.forEach(function(element) {
+    colors_count.forEach(function(element) {
         if (element === totalSquares) {
             finished = true;
         }
-    })
+    });
 
     drawArt();
 
     if (finished) {
-        winnerP.innerHTML = "The winner is " + winningColor + "!"
+        winnerP.innerHTML = "The winner is " + winningColor + "!";
         return;
     } else {
         winnerP.innerHTML = "Fight to determine the best color.";
         setTimeout(() => fight(), 200);
     }
 }
-
 
 function addElement(element) {
     canvasElements.push(element);
@@ -181,6 +227,7 @@ function draw() {
     let startingX = 0; // the starting x within the canvas
     let startingY = 0; // the starting y within the canvas
     let standardWidth = 20; // standard width of the squares
+    circleRadius = Math.random() * 60 + 10;
 
     let squareCountX = Math.round(
         (canvasCoordinates.x + canvas.width) / standardWidth

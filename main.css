@@ -2,6 +2,14 @@ html {
     font-family: "Roboto", sans-serif;
 }
 
+.banner {
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 50px;
+    padding: 20px;
+}
+
 .btn {
     color: black;
     background-color: white;
@@ -30,6 +38,13 @@ html {
     margin-left: 0px;
 }
 
+.flex-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column wrap;
+}
+
 .btn:hover {
     background-color: lightgrey;
 }
@@ -44,8 +59,13 @@ html {
     border: 1px solid black;
 }
 
+.mainHeader {
+    width: 30%;
+}
+
 .description {
+    width: 50%;
     font-style: italic;
     font-weight: lighter;
-    color: darkgray;
+    color: lightgray;
 }
